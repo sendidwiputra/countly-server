@@ -1,0 +1,29 @@
+<div class="widget" style="position:relative; border-bottom-left-radius:0; border-bottom-right-radius:0; margin-bottom:0;">
+    <div class="widget-header">
+        <div class="left">
+            <div style="overflow: auto;">
+                <div class="title small">{{page-title}}</div>
+            </div>
+            <div style="width:300px; display: inline-block;">
+                <div class="cly-select float">
+                    <div class="select-inner">
+                        <div class="text-container">
+                            <div class="text" id="event-selector" data-localize="timesofday.sessions"></div>
+                        </div>
+                        <div class="right combo">{{sessions}}</div>
+                    </div>
+                    <div class="select-items square">
+                        <div id="event-list">
+                        	<div data-value="sessions" class="event-option item" data-localize="timesofday.sessions">{{sessions}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="widget-content">
+	<div id="chart"></div>
+	<script src="times-of-day/javascripts/main.js"></script>
+</div>

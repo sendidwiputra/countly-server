@@ -1,0 +1,22 @@
+{
+  "name": "times-of-day",
+  "title": "Times of Day",
+  "version": "0.0.1",
+  "description": "Visualises days and times of all sessions and custom events.",
+  "author": "Sendi Dwi Putra",
+  "homepage": "https://count.ly/plugins/",
+  "repository" :{ "type" : "git", "url" : "http://github.com/Countly/countly-server.git"},
+  "bugs":{ "url" : "http://github.com/Countly/countly-server/issues"},
+  "keywords": [
+    "countly",
+    "analytics",
+    "mobile",
+    "plugins",
+    "times",
+    "days",
+    "times-of-day"
+  ],
+  "dependencies": {
+  },
+  "private": true
+}
