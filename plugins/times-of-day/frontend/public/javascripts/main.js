@@ -1,9 +1,9 @@
 var margin = {top: 10, right: 10, bottom: 10, left: 15}
-var width = 960 - margin.left - margin.right
+var width = 1009 - margin.left - margin.right
 var height = 405 - margin.top - margin.bottom
 var padding = 3
 var xLabelHeight = 30
-var yLabelWidth = 80
+var yLabelWidth = 70
 var borderWidth = 3
 var duration = 500
 

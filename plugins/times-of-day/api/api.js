@@ -2,9 +2,13 @@ var plugin = {},
 	common = require('../../../api/utils/common.js'),
 	log = common.log('timesofday:api'),
     plugins = require('../../pluginManager.js'),
-    async = require("async");
+    async = require("async"),
+    mongo = require("mongoskin");
 
 (function (plugin) {
+	/**
+     * register for recording number of sessions & custom sessions
+     */
 	plugins.register("/i", function(ob){
 		if(ob.params.qstring.begin_session){
 			if(ob.params.qstring.events){
@@ -45,28 +49,43 @@ var plugin = {},
 		}
 		return false;
 	});
+	/**
+     * register for fetching custom events metadata & times of day data
+     */
 	plugins.register("/o", function(ob){
 		if (ob.params.qstring.method == 'timesofday') {
-			common.db.collection("timesofday"+ob.params.qstring.app_id).aggregate([
-				{
-					$group:{
-						_id:{
-							dow:"$dow",
-							hour:"$hour"
-						},
-						total:{$sum:"$count"}
-					}
+			async.waterfall([
+				function(next){
+					common.db.collection("events").findOne({_id:mongo.helper.toObjectID(ob.params.qstring.app_id)},next);
 				},
-				{
-					$sort:{
-						"_id.dow":1,
-						"_id.hour":1
-					}
+				function(event,next){
+					var criteria={};
+					if(ob.params.qstring.event)
+						criteria.event=ob.params.qstring.event;
+					common.db.collection("timesofday"+ob.params.qstring.app_id).aggregate([
+						{
+							$match:criteria
+						},
+						{
+							$group:{
+								_id:{
+									dow:"$dow",
+									hour:"$hour"
+								},
+								total:{$sum:"$count"}
+							}
+						}
+					],function(err,results){
+						next(err,event,results);
+					});
 				}
-			],function(err,results){
+			],function(err,event,results){
 				if(err)
 					return common.returnOutput(ob.params,{status:"ERROR",error:err});
-				common.returnOutput(ob.params, {status:"OK",data:results});
+				if(event)
+					common.returnOutput(ob.params, {status:"OK",events:event.list,mapEvents:event.map||{},data:results});
+				else
+					common.returnOutput(ob.params, {status:"OK",events:[],mapEvents:{},data:results});
 			});
 			return true;
 		}
